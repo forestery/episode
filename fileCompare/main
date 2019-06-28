@@ -1,0 +1,63 @@
+#!/bin/bash
+
+printFile(){
+	if [ -f "$1" ]; then
+           name=`basename $1`
+           size=`du -k "$1" | cut -f1`
+           echo "$2"" ""$3"" file: ""$1"" ""${name##*.}"" size: ""$size""K"
+        elif [ -d "$1" ]; then
+	   echo "$2"" ""$3"" dir: ""$1"
+           for i in "$1"/*; do
+		printFile "$i" "$2" "$3"
+           done
+        fi 
+}
+
+#printFile /tmp/kkk login add
+
+old=old
+dir=$1
+action=$2
+oldtail=.$old:
+
+echo  "fileAction,Action,filename,fileType,size,modifyTime" > $1"."$2".csv"
+echo  "monitering direcotry: "$dir
+echo  "action is :"$action
+
+#remove the old directory
+#if [ -d ${dir}.${old} ]; then
+rm -rf ${dir}.${old}
+rm -rf ${dir}
+adb pull "/mnt/sdcard/"${dir} "./"${dir}
+adb pull "/mnt/sdcard/"${dir}"."${old} "./"${dir}"."${old}
+#fi 
+
+#copy the current directory and name with a special tail
+#cp -r ${dir} ${dir}.${old}
+
+
+#echo  "hit enter when you have "$action
+#read action_done
+#diff -rqyl ${dir} ${dir}.${old} 
+diff -arqf ${dir} ${dir}.${old} | awk -v old=$oldtail -v action=$action '{if($1=="Only" && substr($3,length($3)-length(old)+1,length($3)) == old) print action,"removed", substr($3,1,length($3)-length(old))"/"$4,$4,substr($3,1,length($3)-length(old)); else if($1=="Only" && substr($3,length($3)-length(old)+1,length($3)) != old ) print action,"..added", substr($3,1,length($3)-1)"/"$4,$4,substr($3,1,length($3)-1);else print action,"changed",$2}' > ${dir}.result1
+
+
+#analysis the result
+
+while IFS='' read -r line || [[ -n "$line" ]]; do
+    #echo "Text read from file: $line"
+    array=($line)
+    printFile "${array[2]}" "${array[1]}" "${array[0]}"
+    
+#    echo  "${array[2]}" "${array[1]}" "${array[0]}"
+
+    #if [ ${array[1]} == "changed" ]; then
+    #    fileChanged=${array[2]}
+    #    fileChanged_size=`du -k "$fileChanged" | cut -f1`
+    #    echo ${array[0]}","${array[1]}","${array[2]}","$fileChanged_size 
+    #fi
+    #if [ -f "${array[2]}" ]; then
+    #	echo ${array[0]}","${array[1]}","${array[2]}                
+    #fi
+    #echo ${array[0]}","${array[1]}","${array[2]}                
+done < "${dir}.result1"
