@@ -1,0 +1,25 @@
+
+1.sh
+mkfifo mypipe
+echo "start" > mypipe
+
+cat /etc/hosts | tee mypipe 
+
+2.sh
+cat mypipe
+#  "start"
+
+cat mypipe
+# "/etc/hosts file content"
+
+
+
+
+
+
+
+
+
+
+
+

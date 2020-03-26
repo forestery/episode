@@ -1,0 +1,6 @@
+Here are the steps I follow to delete a topic named MyTopic:
+
+Stop the Apache Kafka daemon
+Delete the topic data folder: rm -rf /tmp/kafka-logs/MyTopic-0
+Delete the topic metadata: zkCli.sh then deleteall /brokers/MyTopic
+Start the Apache Kafka daemon

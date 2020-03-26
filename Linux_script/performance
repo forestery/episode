@@ -1,0 +1,24 @@
+
+
+1. primary key and partition by key 160
+   load infile into 100000000  .   30minutes    about   60000  rows/Second
+
+   but slow after  20th  , when table have 2  billion rows. it takes 2 hours to insert 1 hundred million. 
+
+2. primary key and no partition 
+   load infile int 10000000         3minutes    about   60000  rows/Second
+
+
+3. not index  just load infile
+   100million rows .  10minutes  about 150000 rows/Second
+   you have to create index.
+   
+
+
+3. sort big file. about 200G file. about 3 billion rows in file. 
+   it takes about 3 hours to sort.
+
+
+    sort -T /data2  -S 300g  -k 2 -t ',' file1 > file2
+
+
