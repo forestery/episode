@@ -1,0 +1,22 @@
+# stop nginx
+nginx -s stop
+rm -rf  /usr/local/nginx
+rm -rf /usr/bin/nginx
+mv /etc/nginx /etc/nginx_bk
+
+
+
+#reinstall nginx
+rm -rf nginx_tmp;mkdir nginx_tmp > /dev/null
+tar -xvzf openssl-1.0.1p.tar.gz -C nginx_tmp > /dev/null 
+tar -xvzf pcre-8.37.tar.gz -C nginx_tmp > /dev/null
+tar -xvzf zlib-1.2.8.tar.gz -C nginx_tmp > /dev/null
+tar -xvzf nginx-1.16.1.tar.gz -C nginx_tmp > /dev/null
+cd nginx_tmp/nginx-1.16.1/
+./configure --prefix=/usr/local/nginx --with-http_ssl_module --with-openssl=../nginx_tmp/openssl-1.0.1p --with-pcre=../nginx_tmp/pcre-8.37 --with-zlib=../nginx_tmp/zlib-1.2.8  --sbin-path=/usr/bin --conf-path=/etc/nginx/nginx.conf --with-http_v2_module --with-mail --with-mail_ssl_module --with-debug
+make
+make install
+
+# start nginx
+nginx
+nginx -s reload
