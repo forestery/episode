@@ -1,0 +1,6 @@
+- free open source mpp database: greenplum.
+- near real-time bigdata data warehouse: druid.
+- HTAP: TiDB(with TiFlash)
+- ETL tool:  dolphinscheduler  https://www.analysys.cn/developer/apache-dolphinscheduler/
+- BI tool: superset redash metabase
+- data visualize: D3  echarts
