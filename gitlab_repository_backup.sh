@@ -16,3 +16,12 @@ for d in ./*/ ; do (cd "$d" && git config --unset core.bare && git checkout mast
 # check result
 for d in ./*/ ; do (cd "$d" && pwd && git branch --list ); done
 
+
+
+
+# add a exist_reposity to the gitlab new project.
+cd existing_repo
+git remote rename origin old-origin
+git remote add origin http://{host}:{port}/xxxx.git
+git push -u origin --all
+git push -u origin --tags
