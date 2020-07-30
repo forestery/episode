@@ -1,4 +1,4 @@
-- free open source mpp database: greenplum.
+- free open source mpp database: greenplum. with Apache Madlib to do Machine Learning just inside Greenplum. Greenplum is MPP over postgrelSQL.
 - near real-time bigdata data warehouse: druid.
 - HTAP: TiDB(with TiFlash)
 - ETL tool:  dolphinscheduler  https://www.analysys.cn/developer/apache-dolphinscheduler/
